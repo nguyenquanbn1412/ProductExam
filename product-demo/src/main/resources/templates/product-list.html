@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            background-color: #ccc;
+        }
+
+        .active {
+            background-color: darkorange;
+            color: white;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            height: 100%;
+            cursor: pointer; /* Add cursor pointer for card */
+        }
+
+        .card-content {
+            height: calc(100% - 70px); /* Adjust as needed */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price {
+            color: gray;
+            text-decoration: line-through;
+        }
+
+        .rating {
+            color: orange;
+        }
+
+        .discount-price {
+            font-weight: bold;
+            color: red;
+        }
+
+        .btn-page-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Product List</h2>
+    <div class="row">
+        <div th:each="product : ${pageData.getContent()}" class="col-md-4 mb-3">
+            <div class="card" th:onclick="'/products/' + ${product.id}">
+                <img src="https://www.watchstore.vn/images/products/others/2024/large/bg9980-a4-1-762710541-766613817-1712669811.webp" class="card-img-top" alt="Product Image">
+                <div class="card-content">
+                    <h5 class="card-title mb-3"><strong>Name:</strong> <span th:text="${product.name}"></span></h5>
+                    <p class="card-text mb-2"><strong>Description:</strong> <span th:text="${product.description}"></span></p>
+                    <p class="card-text mb-2"><strong>Price:</strong> <span class="price" th:text="${product.price}"></span></p>
+                    <p class="card-text mb-2"><strong>Rating:</strong>
+                        <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </span>
+                    </p>
+                    <p class="card-text mb-2"><strong>Discounted Price:</strong> <span class="discount-price" th:text="${product.priceDiscount}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-page-container">
+        <button class="btn btn-prev"
+                th:classappend="${pageData.getCurrentPage() == 1 ? 'disabled' : ''}">
+            <span>Previous Page</span>
+        </button>
+        <button class="btn btn-page"
+                th:data-page="${number}"
+                th:each="number : ${#numbers.sequence(1, pageData.getTotalPages())}"
+                th:classappend="${pageData.getCurrentPage() == number} ? 'active' : ''">
+            <span th:text="${number}"></span>
+        </button>
+        <button class="btn btn-next"
+                th:classappend="${pageData.getCurrentPage() == pageData.getTotalPages() ? 'disabled' : ''}">
+            <span>Next Page</span>
+        </button>
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const btnPrev = document.querySelector('.btn-prev');
+    const btnNext = document.querySelector('.btn-next');
+    const btnPages = document.querySelectorAll('.btn-page');
+    let currentPage = Number(document.querySelector('.active').dataset.page);
+
+    btnPrev.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            btnPrev.classList.remove('disabled');
+            window.location.href = `/products?page=${currentPage}`;
+        } else {
+            btnPrev.classList.add('disabled');
+        }
+    });
+
+    btnNext.addEventListener("click", () => {
+        if (currentPage < btnPages.length) {
+            currentPage++;
+            btnNext.classList.remove('disabled');
+            window.location.href = `/products?page=${currentPage}`;
+        } else {
+            btnNext.classList.add('disabled');
+        }
+    });
+
+    btnPages.forEach(btn => {
+        btn.addEventListener("click", () => {
+            currentPage = Number(btn.dataset.page);
+            document.querySelector('.active').classList.remove('active');
+            btn.classList.add('active');
+            if (currentPage === 1) {
+                btnPrev.classList.add('disabled');
+            } else {
+                btnPrev.classList.remove('disabled');
+            }
+            if (currentPage === btnPages.length) {
+                btnNext.classList.add('disabled');
+            } else {
+                btnNext.classList.remove('disabled');
+            }
+            window.location.href = `/products?page=${currentPage}`;
+        })
+    });
+
+</script>
+</body>
+</html>
