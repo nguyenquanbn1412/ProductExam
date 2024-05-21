@@ -1,21 +1,69 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Product Detail</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .price {
+            color: gray;
+            text-decoration: line-through;
+        }
+
+        .rating {
+            color: orange;
+        }
+
+        .discount-price {
+            font-weight: bold;
+            color: red;
+        }
+
+        .card {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: auto;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>Product Detail</h1>
-<div th:if="${product}">
-    <p>ID: <span th:text="${product.id}"></span></p>
-    <p>Name: <span th:text="${product.name}"></span></p>
-    <p>Description: <span th:text="${product.description}"></span></p>
-    <p>Price: <span th:text="${product.price}"></span></p>
-    <p>Rating: <span th:text="${product.rating}"></span></p>
-    <p>Discount: <span th:text="${product.priceDiscount}"></span></p>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Product Detail</h2>
+    <div th:if="${product}" class="card">
+        <img src="https://www.watchstore.vn/images/products/others/2024/large/bg9980-a4-1-762710541-766613817-1712669811.webp" class="card-img-top" alt="Product Image">
+        <div class="card-content">
+            <h3 class="card-title"><strong>Name:</strong> <span th:text="${product.name}"></span></h3>
+            <p class="card-text"><strong>Description:</strong> <span th:text="${product.description}"></span></p>
+            <p class="card-text"><strong>Price:</strong> <span class="price" th:text="${product.price}"></span></p>
+            <p class="card-text"><strong>Rating:</strong>
+                <span class="rating">
+                    <i class="fas fa-star" th:if="${product.rating >= 1}"></i>
+                    <i class="fas fa-star" th:if="${product.rating >= 2}"></i>
+                    <i class="fas fa-star" th:if="${product.rating >= 3}"></i>
+                    <i class="fas fa-star" th:if="${product.rating >= 4}"></i>
+                    <i class="fas fa-star" th:if="${product.rating >= 5}"></i>
+                </span>
+                <span th:text="${product.rating}"></span>
+            </p>
+            <p class="card-text"><strong>Discounted Price:</strong> <span class="discount-price" th:text="${product.priceDiscount}"></span></p>
+        </div>
+    </div>
+    <div th:unless="${product}" class="text-center">
+        <p>No product found with the specified ID.</p>
+    </div>
 </div>
-<div th:unless="${product}">
-    <p>No product found with the specified ID.</p>
-</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
