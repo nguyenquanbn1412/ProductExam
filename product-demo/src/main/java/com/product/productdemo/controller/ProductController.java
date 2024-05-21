@@ -12,18 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
-
-//    @GetMapping("/")
-//    public String getAllProducts(Model model) {
-//        List<Product> products = productService.getAllProducts();
-//        model.addAttribute("products", products);
-//        return "product-list";
-//    }
 
     @GetMapping("/")
     public String getAllProducts(Model model,

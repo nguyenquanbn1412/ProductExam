@@ -54,7 +54,8 @@
     <h2 class="mb-4">Product List</h2>
     <div class="row">
         <div th:each="product : ${pageData.getContent()}" class="col-md-4 mb-3">
-            <div class="card" th:onclick="'/products/' + ${product.id}">
+            <div class="card">
+<!--                <a th:href="@{/products/{id} (id = ${products.id})}">View detail</a>-->
                 <img src="https://www.watchstore.vn/images/products/others/2024/large/bg9980-a4-1-762710541-766613817-1712669811.webp" class="card-img-top" alt="Product Image">
                 <div class="card-content">
                     <h5 class="card-title mb-3"><strong>Name:</strong> <span th:text="${product.name}"></span></h5>
@@ -70,6 +71,7 @@
                         </span>
                     </p>
                     <p class="card-text mb-2"><strong>Discounted Price:</strong> <span class="discount-price" th:text="${product.priceDiscount}"></span></p>
+
                 </div>
             </div>
         </div>
@@ -92,6 +94,8 @@
         </button>
     </div>
 
+    <br>
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -108,41 +112,46 @@
         if (currentPage > 1) {
             currentPage--;
             btnPrev.classList.remove('disabled');
-            window.location.href = `/products?page=${currentPage}`;
+            window.location.href = `/?page=${currentPage}`;
         } else {
             btnPrev.classList.add('disabled');
         }
-    });
+
+    })
 
     btnNext.addEventListener("click", () => {
         if (currentPage < btnPages.length) {
             currentPage++;
             btnNext.classList.remove('disabled');
-            window.location.href = `/products?page=${currentPage}`;
+            window.location.href = `/?page=${currentPage}`;
         } else {
             btnNext.classList.add('disabled');
         }
-    });
+    })
 
     btnPages.forEach(btn => {
         btn.addEventListener("click", () => {
             currentPage = Number(btn.dataset.page);
+
             document.querySelector('.active').classList.remove('active');
             btn.classList.add('active');
+
+            // Kiểm tra nut next, prev
             if (currentPage === 1) {
                 btnPrev.classList.add('disabled');
             } else {
                 btnPrev.classList.remove('disabled');
             }
+
             if (currentPage === btnPages.length) {
                 btnNext.classList.add('disabled');
             } else {
                 btnNext.classList.remove('disabled');
             }
-            window.location.href = `/products?page=${currentPage}`;
-        })
-    });
 
+            window.location.href = `/?page=${currentPage}`;
+        })
+    })
 </script>
 </body>
 </html>
