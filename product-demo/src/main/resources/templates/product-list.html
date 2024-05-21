@@ -18,9 +18,11 @@
         }
 
         .card {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding-left: 20px;
+            padding-bottom: 20px;
             height: 100%;
-            cursor: pointer; /* Add cursor pointer for card */
+            /* cursor: pointer;  Add cursor pointer for card */
         }
 
         .card-content {
@@ -42,11 +44,14 @@
             font-weight: bold;
             color: red;
         }
-
-        .btn-page-container {
-            text-align: center;
+        .row{
             margin-bottom: 20px;
         }
+        .btn-page-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -55,28 +60,34 @@
     <div class="row">
         <div th:each="product : ${pageData.getContent()}" class="col-md-4 mb-3">
             <div class="card">
-<!--                <a th:href="@{/products/{id} (id = ${products.id})}">View detail</a>-->
-                <img src="https://www.watchstore.vn/images/products/others/2024/large/bg9980-a4-1-762710541-766613817-1712669811.webp" class="card-img-top" alt="Product Image">
-                <div class="card-content">
-                    <h5 class="card-title mb-3"><strong>Name:</strong> <span th:text="${product.name}"></span></h5>
-                    <p class="card-text mb-2"><strong>Description:</strong> <span th:text="${product.description}"></span></p>
-                    <p class="card-text mb-2"><strong>Price:</strong> <span class="price" th:text="${product.price}"></span></p>
-                    <p class="card-text mb-2"><strong>Rating:</strong>
-                        <span class="rating">
+                <a th:href="@{/products/{id}(id=${product.id})}">
+                    <img src="https://www.watchstore.vn/images/products/others/2024/large/bg9980-a4-1-762710541-766613817-1712669811.webp"
+                         class="card-img-top" alt="Product Image">
+                    <div class="card-content">
+                        <h5 class="card-title mb-3"><strong> <span th:text="${product.name}"></span></strong></h5>
+                        <p class="card-text mb-2"><strong> <span
+                                th:text="${product.description}"></span></strong></p>
+                    </div>
+                </a>
+                <p class="card-text mb-2"><strong></strong> <span class="price"
+                                                                  th:text="${product.price}"></span></p>
+                <p class="card-text mb-2"><strong></strong>
+                    <span class="rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                         </span>
-                    </p>
-                    <p class="card-text mb-2"><strong>Discounted Price:</strong> <span class="discount-price" th:text="${product.priceDiscount}"></span></p>
+                </p>
+                <p class="card-text mb-2"><strong> <span class="discount-price"
+                                                         th:text="${product.priceDiscount}"></span></strong>
+                </p>
 
-                </div>
             </div>
         </div>
     </div>
-
+    <br>
     <div class="btn-page-container">
         <button class="btn btn-prev"
                 th:classappend="${pageData.getCurrentPage() == 1 ? 'disabled' : ''}">
